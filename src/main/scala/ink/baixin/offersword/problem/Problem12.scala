@@ -44,6 +44,31 @@ object Problem12 {
     isOverflow
   }
 
+  def print1ToMaxOfNDigits2(n: Int) = {
+    if (n <= 0) {
+      throw new RuntimeException("The input number must be larger than 0!")
+    }
+    // create a array with fixed length and default value
+    val arr = Array.fill(n)('0')
+    for (i <- 0 to 9) {
+      arr(0) = (i + '0').toChar
+      print1ToMaxOfNDigitsRecursively(arr, n, 0)
+    }
+  }
+
+  def print1ToMaxOfNDigitsRecursively(arr: Array[Char], length: Int, index: Int):Unit = {
+    if (index < length -1) {
+      // before last index, recursive
+      for (i <- 0 to 9) {
+        arr(index + 1) = (i + '0').toChar
+        print1ToMaxOfNDigitsRecursively(arr, length, index + 1)
+      }
+    } else {
+      // if reach last index, print
+      printNumber(arr)
+    }
+  }
+
   def printNumber(arr: Array[Char]) = {
     var isBeginning0 = true
 
@@ -55,10 +80,14 @@ object Problem12 {
         print(ch)
       }
     }
-    println()
+
+    // avoid arr's element is whole '0'
+    if (arr.filter(_ != '0').length != 0)
+      println()
   }
 
   def main(args: Array[String]): Unit = {
     print1ToMaxOfNDigits(3)
+    print1ToMaxOfNDigits2(3)
   }
 }
